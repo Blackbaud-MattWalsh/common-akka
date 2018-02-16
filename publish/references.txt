@@ -1,0 +1,8 @@
+
+http://www.baeldung.com/dockerizing-spring-boot-application
+
+https://spring.io/guides/gs/spring-boot-docker/
+
+https://developer.lightbend.com/guides/akka-cluster-kubernetes-k8s-deploy/
+
+1. run `> gradle build docker`
