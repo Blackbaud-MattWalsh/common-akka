@@ -1,30 +1,26 @@
-package demo;
+package com.blackbaud.akka.actors;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.japi.pf.FI;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Component
-public class Endpoint {
+public abstract class Endpoint {
 
-    private ApplicationConfiguration applicationConfiguration;
+    public abstract ActorSystem getActorSystem();
 
-    @Autowired
-    public Endpoint(ApplicationConfiguration applicationConfiguration) {
-        this.applicationConfiguration = applicationConfiguration;
-    }
-
-    public <R> CompletableFuture<R> sendMessage(Object newTopicMessage, ActorRef actorRef, Class<R> responseType) {
+    public <R> CompletableFuture<R> sendMessage(
+            final Object newTopicMessage, final ActorRef actorRef, final Class<R> responseType) {
         final CompletableFuture<R> future = new CompletableFuture<>();
         final Props props = Props.create(InternalActor.class, future, newTopicMessage, actorRef, responseType);
-        applicationConfiguration.actorSystem().actorOf(props);
+        getActorSystem().actorOf(props);
         return future;
     }
 
@@ -32,7 +28,9 @@ public class Endpoint {
         private CompletableFuture<Object> future;
         private Class<?> responseType;
 
-        public InternalActor(CompletableFuture<Object> future, Object message, ActorRef actorRef, Class<?> responseType) {
+        public InternalActor(
+                final CompletableFuture<Object> future, final Object message, final ActorRef actorRef,
+                final Class<?> responseType) {
             this.future = future;
             this.responseType = responseType;
             actorRef.tell(message, getSelf());
@@ -46,7 +44,7 @@ public class Endpoint {
                     .build();
         }
 
-        private void error(Object o) {
+        private void error(final Object o) {
             future.exceptionally(e -> {
                 log.error("COULD NOT PROCESS MESSAGE {} ", o);
                 shutdown();

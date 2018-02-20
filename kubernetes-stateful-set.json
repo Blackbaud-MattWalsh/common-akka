@@ -18,6 +18,7 @@
           {
             "name": "myapp",
             "image": "com.blackbaud/common-akka",
+            "imagePullPolicy": "Never",
             "ports": [
               {
                 "containerPort": 2551,

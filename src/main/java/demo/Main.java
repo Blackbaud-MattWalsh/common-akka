@@ -2,14 +2,14 @@ package demo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
 
 @Slf4j
 @SpringBootApplication
-@ComponentScan("com.blackbaud.akka.demo.demo")
-@Import({ApplicationConfiguration.class})
+@ComponentScan("demo")
+@EnableAutoConfiguration
 public class Main {
 
     public static void main(String[] args) {

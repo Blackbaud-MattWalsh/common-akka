@@ -1,6 +1,7 @@
 package demo;
 
 import akka.actor.ActorSystem;
+import com.blackbaud.akka.actors.Endpoint;
 import com.blackbaud.akka.actors.ShardRegions;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -37,6 +38,16 @@ public class ApplicationConfiguration {
     @PostConstruct
     public void init() {
         shardRegions.startActor(actorSystem(), TopicActor.class, TopicMessageExtractor.class);
+    }
+
+    @Bean
+    public Endpoint getEndpoint(){
+        return new Endpoint(){
+            @Override
+            public ActorSystem getActorSystem() {
+                return actorSystem();
+            }
+        };
     }
 
 }

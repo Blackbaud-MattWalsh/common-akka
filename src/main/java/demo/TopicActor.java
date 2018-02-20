@@ -25,6 +25,7 @@ public class TopicActor extends AbstractActor {
 
     @SuppressWarnings("WeakerAccess")
     public abstract static class TopicMsg implements Serializable {
+        private static final long serialVersionUID = -8164492162228866838L;
         public final String uuid;
         public final String topicId;
 
@@ -36,6 +37,7 @@ public class TopicActor extends AbstractActor {
 
     @SuppressWarnings("WeakerAccess")
     public static class NewTopicMessage extends TopicMsg {
+        private static final long serialVersionUID = 3485467686802992238L;
         public final String message;
         public final Instant created = Instant.now();
 

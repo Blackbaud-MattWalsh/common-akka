@@ -1,6 +1,7 @@
 package demo;
 
 import akka.actor.ActorRef;
+import com.blackbaud.akka.actors.Endpoint;
 import com.blackbaud.akka.actors.ShardRegions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -27,7 +28,8 @@ public class EndpointsController {
     public CompletableFuture<String> newTopicMessage() {
         TopicActor.NewTopicMessage newTopicMessage = new TopicActor.NewTopicMessage(randomThing(topics), randomThing(comments));
         ActorRef shardRegion = shardRegions.getShardRegion(TopicActor.class);
-        return endpoint.sendMessage(newTopicMessage, shardRegion, String.class);
+        return endpoint.sendMessage(newTopicMessage, shardRegion, String.class)
+                .thenApply(response -> "COMPLETED => " + response);
     }
 
     private final List<String> topics = Collections.unmodifiableList(Arrays.asList(

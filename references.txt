@@ -9,3 +9,4 @@ https://developer.lightbend.com/guides/akka-cluster-kubernetes-k8s-deploy/
 1. run `> gradle build docker` to build docker image
 1. create kubernetes service `> kubectl create -f kubernetes-service.json`
 1. create kubernetes stateful set `> kubectl create -f kubernetes-stateful-set.json`
+1. run the pod: `> kubectl scale statefulsets myapp --replicas=3`
