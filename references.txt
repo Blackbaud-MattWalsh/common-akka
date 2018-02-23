@@ -26,16 +26,16 @@ to build:
 
 gradle build docker
 docker push walshms/akkademo
-kubectl replace --force -f kubernetes-service.json; kubectl replace --force -f kubernetes-stateful-set.json
+kubectl replace --force -f kubernetes-service.json; kubectl replace --force -f kubernetes-stateful-set.json; kubectl replace --force -f kubernetes-tomcat-service.json
 kubectl scale statefulsets akkademo --replicas=3
 
-kubectl delete statefulset akkademo; kubectl delete service akkademo
+kubectl delete statefulset akkademo; kubectl delete service akkademo; kubectl delete service akkademo-fe
 
 kubectl describe pod akkademo-0
+
+kubectl attach akkademo-0
 
 AKKA_REMOTING_BIND_HOST=$HOSTNAME.akkademo.default.svc.cluster.local
 AKKA_REMOTING_BIND_PORT=2551
 AKKA_SEED_NODES=akkademo-0.akkademo.default.svc.cluster.local:2551,akkademo-1.akkademo.default.svc.cluster.local:2551,akkademo-2.akkademo.default.svc.cluster.local:2551
 AKKA_ACTOR_SYSTEM_NAME=akkademo
-
-TODO - fix application.conf

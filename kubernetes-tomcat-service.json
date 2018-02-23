@@ -3,18 +3,17 @@
   "kind": "Service",
   "metadata": {
     "labels": {
-      "app": "akkademo"
+      "app": "akkademo-fe"
     },
-    "name": "akkademo"
+    "name": "akkademo-fe"
   },
   "spec": {
-    "clusterIP": "None",
     "ports": [
       {
-        "name": "akka-remote",
-        "port": 2551,
+        "name": "tomcat",
+        "port": 9001,
         "protocol": "TCP",
-        "targetPort": 2551
+        "targetPort": 9001
       }
     ],
     "selector": {
