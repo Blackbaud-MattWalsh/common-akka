@@ -5,8 +5,37 @@ https://spring.io/guides/gs/spring-boot-docker/
 
 https://developer.lightbend.com/guides/akka-cluster-kubernetes-k8s-deploy/
 
-0. make sure minikube is running: `> minikube start`
-1. run `> gradle build docker` to build docker image
-1. create kubernetes service `> kubectl create -f kubernetes-service.json`
-1. create kubernetes stateful set `> kubectl create -f kubernetes-stateful-set.json`
-1. run the pod: `> kubectl scale statefulsets myapp --replicas=3`
+0. current gradle installation is needed for palantir
+0. make sure you're logged into docker CLI
+    `> docker login`
+0. make sure minikube is running:
+    `> minikube start`
+
+1. build docker image
+    `> gradle build docker`
+1. push image to docker
+    `> docker push walshms/akkademo`
+1. create kubernetes service
+    `> kubectl create -f kubernetes-service.json`
+1. create kubernetes stateful set
+    `> kubectl create -f kubernetes-stateful-set.json`
+1. run the pod:
+    `> kubectl scale statefulsets myapp --replicas=3`
+
+to build:
+
+gradle build docker
+docker push walshms/akkademo
+kubectl replace --force -f kubernetes-service.json; kubectl replace --force -f kubernetes-stateful-set.json
+kubectl scale statefulsets akkademo --replicas=3
+
+kubectl delete statefulset akkademo; kubectl delete service akkademo
+
+kubectl describe pod akkademo-0
+
+AKKA_REMOTING_BIND_HOST=$HOSTNAME.akkademo.default.svc.cluster.local
+AKKA_REMOTING_BIND_PORT=2551
+AKKA_SEED_NODES=akkademo-0.akkademo.default.svc.cluster.local:2551,akkademo-1.akkademo.default.svc.cluster.local:2551,akkademo-2.akkademo.default.svc.cluster.local:2551
+AKKA_ACTOR_SYSTEM_NAME=akkademo
+
+TODO - fix application.conf

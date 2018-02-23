@@ -2,33 +2,37 @@
   "apiVersion": "apps/v1beta1",
   "kind": "StatefulSet",
   "metadata": {
-    "name": "myapp"
+    "name": "akkademo"
   },
   "spec": {
-    "serviceName": "myapp",
+    "serviceName": "akkademo",
     "replicas": 3,
     "template": {
       "metadata": {
         "labels": {
-          "app": "myapp"
+          "app": "akkademo"
         }
       },
       "spec": {
         "containers": [
           {
-            "name": "myapp",
-            "image": "com.blackbaud/common-akka",
-            "imagePullPolicy": "Never",
+            "name": "akkademo",
+            "image": "walshms/akkademo:latest",
+            "imagePullPolicy": "Always",
             "ports": [
               {
                 "containerPort": 2551,
                 "name": "akka-remote"
+              },
+              {
+                "containerPort": 9001,
+                "name": "tomcat"
               }
             ],
             "env": [
               {
                 "name": "AKKA_ACTOR_SYSTEM_NAME",
-                "value": "myapp"
+                "value": "JEEFY"
               },
               {
                 "name": "AKKA_REMOTING_BIND_PORT",
@@ -36,11 +40,11 @@
               },
               {
                 "name": "AKKA_REMOTING_BIND_HOST",
-                "value": "$HOSTNAME.myapp.default.svc.cluster.local"
+                "value": "$HOSTNAME.akkademo.default.svc.cluster.local"
               },
               {
                 "name": "AKKA_SEED_NODES",
-                "value": "myapp-0.myapp.default.svc.cluster.local:2551,myapp-1.myapp.default.svc.cluster.local:2551,myapp-2.myapp.default.svc.cluster.local:2551"
+                "value": "akkademo-0.akkademo.default.svc.cluster.local:2551,akkademo-1.akkademo.default.svc.cluster.local:2551,akkademo-2.akkademo.default.svc.cluster.local:2551"
               },
               {
                 "name": "HTTP_HOST",
@@ -48,7 +52,7 @@
               },
               {
                 "name": "HTTP_PORT",
-                "value": "9000"
+                "value": "9001"
               },
               {
                 "name": "CLUSTER_MEMBERSHIP_ASK_TIMEOUT",

@@ -30,8 +30,8 @@ targetCompatibility = 1.8
 
 docker {
     dockerfile file('Dockerfile')
-    name "${project.group}/${project.artifactId}"
-    files jar.archivePath
+    name 'walshms/akkademo'
+    files jar.archivePath, 'run-app.sh'
     buildArgs(['JAR_FILE': "${jar.archiveName}"])
 }
 
