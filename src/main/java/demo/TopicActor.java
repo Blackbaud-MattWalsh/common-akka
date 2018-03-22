@@ -5,7 +5,6 @@ import akka.actor.ActorRef;
 import com.blackbaud.akka.actors.AkkaActorComponent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -15,7 +14,6 @@ import java.util.UUID;
 
 @Slf4j
 @AkkaActorComponent
-@Import(Database.class)
 public class TopicActor extends AbstractActor {
 
     @Autowired
@@ -51,6 +49,7 @@ public class TopicActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(NewTopicMessage.class, this::processNewTopicMessage)
+                .matchAny(this::unhandled)
                 .build();
     }
 
